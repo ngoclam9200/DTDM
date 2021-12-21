@@ -6,6 +6,7 @@ Xây dựng hai máy ubuntu trên EC2.
 |----|
 |Master|
 |Worker|
+
 ![](https://github.com/ngoclam9200/DTDM/blob/master/File/anh%20readme/2mayao.png)
 ## Install Kubernetes Cluster using kubeadm
 Hướng dẫn thiết lập hai node master và worker.
