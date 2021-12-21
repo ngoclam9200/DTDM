@@ -58,7 +58,7 @@ apt update && apt install -y kubeadm=1.18.5-00 kubelet=1.18.5-00 kubectl=1.18.5-
 ### Tại máy kmaster
 ##### Khởi tạo Kubernetes Cluster
 ```
-kubeadm init --apiserver-advertise-address=172.16.16.100 --pod-network-cidr=192.168.0.0/16  --ignore-preflight-errors=all
+kubeadm init --apiserver-advertise-address=172.31.87.187 --pod-network-cidr=192.168.0.0/16  --ignore-preflight-errors=all
 ```
 Với __--apiserver-advertise-address__ là địa chỉ của máy Master
 ##### Deploy Calico network
@@ -88,6 +88,7 @@ Sử dụng kết quả trả về từ lệnh __kubeadm token create__ ở bư�
 ```
 kubectl get nodes
 ```
+![](https://github.com/ngoclam9200/DTDM/blob/master/File/anh%20readme/getnodes.png)
 ##### Get component status
 ```
 kubectl get cs
@@ -186,7 +187,7 @@ kubernetes-dashboard        NodePort    10.101.194.22   <none>        443:32000/
 ### Truy cập Kubernetes Dashboard
 Việc triển khai Dịch vụ được chỉ định một cổng 30513 / TCP.
 ```
-!()[]
+![](https://github.com/ngoclam9200/DTDM/blob/master/File/anh%20readme/dashboardkubernetes.png)
 
 ```
 Hãy xác nhận xem quyền truy cập vào Dashboard có hoạt động hay không.
