@@ -179,7 +179,93 @@ Việc triển khai Dịch vụ được chỉ định một cổng 30513 / TCP.
 ```
 
 ![](https://github.com/ngoclam9200/DTDM/blob/master/File/anh%20readme/dashboardkubernetes.png)
-Hãy xác nhận xem quyền truy cập vào Dashboard có hoạt động hay không.
+### Create Admin User để truy cập Kubernetes Dashboard
+Phần này sẽ thảo luận về cách tạo người dùng admin để có quyền truy cập vào tất cả các tài nguyên Kubernetes. Người dùng admin có thể sửa đổi tất cả các đối tượng trong tất cả các namespace cũng như quản lý bất kỳ thành phần nào khác trong một cụm cluster.
+
+#### Bước 1: Tạo tài khoản Admin service
+Hãy bắt đầu bằng cách tạo file mainfest tài khoản dịch vụ. Và sẽ đặt tên cho tài khoản dịch vụ là __jmutai-admin__.
+```
+$ vim admin-sa.yml
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: jmutai-admin
+  namespace: kube-system
+```
+Trong đó __jmutai-admin__ là tên của tài khoản dịch vụ được tạo.
+Sau khi tạo tệp, hãy áp dụng mainfesr để tạo đối tượng trong kubernetes cluster.
+```
+$ kubectl apply -f admin-sa.yml
+serviceaccount/jmutai-admin created
+clusterrolebinding.rbac.authorization.k8s.io/jmutai-admin created
+```
+
+#### Bước 2: Tạo ràng buộc role cluster
+Tiếp theo là gán tài khoản service đã tạo ràng buộc role cluster của __cluster-admin__.
+```
+$ vim admin-rbac.yml
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: jmutai-admin
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: cluster-admin
+subjects:
+  - kind: ServiceAccount
+    name: jmutai-admin
+    namespace: kube-system
+```
+Thay thế __jmutai-admin__ bằng tên của tài khoản service bạn đã tạo ở bước 1.
+
+Apply file.
+```
+kubectl apply -f admin-rbac.yml
+```
+
+#### Bước 3: Lấy Token người dùng admin
+Bạn có thể in mã token đã tạo cho tài khoản service bằng cách sử dụng lệnh __kubectl__.
+
+Đặt một biến để lưu trữ tên của tài khoản service.
+```
+SA_NAME="jmutai-admin"
+```
+Sau đó chạy lệnh bên dưới để in mã __Token__ cho người dùng admin đã tạo.
+```
+kubectl -n kube-system describe secret $(kubectl -n kube-system get secret | grep ${SA_NAME} | awk '{print $1}')
+```
+
+Output:
+```
+Name:         jmutai-admin-token-mm9jd
+Namespace:    kube-system
+Labels:       <none>
+Annotations:  kubernetes.io/service-account.name: jmutai-admin
+              kubernetes.io/service-account.uid: 80fade4b-4270-11ea-9fe4-005056ba45bd
+
+Type:  kubernetes.io/service-account-token
+
+Data
+====
+token:      eyJhbGciOiJSUzI1NiIsImtpZCI9IiJ9.eyJpc7MiOiJrdWJlcm5ldGVzL3NlcnZpY2VhY2NvdW50Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9uYW1lc3BhY2UiOiJrdWJlLXN5c3RlbSIsImt1YmVybmV0ZXMuaW8vc2VydmljZWFjY291bnQvc2VjcmV0Lm5hbWUxOiJqa211dGFpLWFkbWluLXRva2VuLW1tOWpkIiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9zZXJ2aWNlLWFjY291bnQubmFtZSI6ImprbXV0YWktYWRtaW4iLCJrdWJlcm5ldGVzLmlvL3NlcnZpY2VhY2NvdW50L3NlcnZpY2UtYWNjb3VudC51aWQiOiI4MGZhZGU0Yi00MjcwLTExZWEtOWZlNC0wMDUwNTZiYTQ1YmQiLCJzdWIiOiJzeXN0ZW06c2VydmljZWFjY291bnQ6a3ViZS1zeXN0ZW06amttdXRhaS1hZG1pbiJ9.uMC2ydeHF4jVA5tnKFbBeHRvc4NWqL920jigk2FDeduUdBuFhsNyDcscmL-pBbWHG5KKwOAEuAAeyNaknaHsDadNnbLpp4AMZTTdr22FEp-_v7MfIEQm3QWmq-c0ykpdrzUzGmk5Q3JIpfqeorDI0lZd52-DF4IVMw3VtTNp6ZMHdieQUNRnCEyfs98raCTRAotiXZQaMvmRW5s9peu5hfxM71jufg-Qzmflr9nO-dY2dOHh1WZcKhJqfNfB73GYX2TQlUlurV4Oy0-2CpUUpJ1HAjcSHzKGuSrMUAMAhRwhbZZXhwvbQ6Ei_9Vv2PkD8_Pw9c-k9x-bblFSAqyFhA
+ca.crt:     1025 bytes
+namespace:  11 bytes
+```
+Sao chép nội dung trong khóa mã __Token__ vừa lấy được.
+
+#### Bước 4: Truy cập Kubernetes Dashboard
+Sau khi mã Token được tạo, bạn có thể truy cập Kubernetes Dashboard của mình bằng nó. Nếu sử dụng __NodePort__ để truy cập Kubernetes Dashboard, bạn có thể lấy cổng được cấp phát bằng sử dụng lệnh.
+```
+$ kubectl get services -n <namespace> | grep dashboard
+kubernetes-dashboard   NodePort    10.111.76.69    <none>        443:30506/TCP                   414d
+```
+Đối với tôi, tôi sẽ truy cập Kubernetes dashboard trên bất kỳ địa chỉ IP máy cluster nào trên cổng 30506.
+
+![](data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22909%22 height=%22558%22%3E%3C/svg%3E)
+
 
 ## NGINX on a Kubernetes Cluster
 Chúng tôi tạo deployment NGINX bằng cách sử dụng hình ảnh NGINX.
@@ -230,6 +316,46 @@ Hãy xác minh xem điều đó có thực sự đúng hay không, rằng tôi k
 
 
 ![](https://github.com/ngoclam9200/DTDM/blob/master/File/anh%20readme/nginxdemo.png)
+
+### Deploy image on kubernetes
+Chuẩn bị source code một website đơn giản
+![](https://github.com/ngoclam9200/DTDM/blob/master/File/anh%20readme/anhsourcecode.png)
+Thực hiện lệnh để trỏ vào thư mục source code
+```
+cd webdemodtdm/
+```
+Tạo file Dockerfile
+```
+vim Dockerfile
+```
+Gõ 2 dòng lệnh sau sau đó lưu file
+```
+
+FROM httpd:2.4-alpine
+COPY ./code /usr/local/apache2/htdocs
+```
+Thực hiện build và push lên dockerhub (ta đã có sẵn 1 repositori)
+![](https://github.com/ngoclam9200/DTDM/blob/master/File/anh%20readme/dockerhub.png)
+```
+docker login 
+docker build -t ngoclam0902/webdemodtdm:1.0 .
+docker push ngoclam0902:webdemodtdm:1.0
+```
+Thực hiện tạo service và deployment
+```
+sudo kubectl create deployment webdemo --image=ngoclam0902/webdemodtdm:1.0
+sudo kubectl create service nodeport webdemo --tcp=80:80
+```
+Kiểm tra deployment, pod và service
+```
+kubectl get svc
+kubectl get deploy
+kubectl get pod
+```
+![](https://github.com/ngoclam9200/DTDM/blob/master/File/anh%20readme/svcpoddeploy.png)
+Chạy web trên trình duyêt
+![](https://github.com/ngoclam9200/DTDM/blob/master/File/anh%20readme/webdemo.png)
+
 
 
 
