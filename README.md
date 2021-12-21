@@ -187,9 +187,11 @@ kubernetes-dashboard        NodePort    10.101.194.22   <none>        443:32000/
 ### Truy cập Kubernetes Dashboard
 Việc triển khai Dịch vụ được chỉ định một cổng 30513 / TCP.
 ```
-![](https://github.com/ngoclam9200/DTDM/blob/master/File/anh%20readme/dashboardkubernetes.png)
+
 
 ```
+
+![](https://github.com/ngoclam9200/DTDM/blob/master/File/anh%20readme/dashboardkubernetes.png)
 Hãy xác nhận xem quyền truy cập vào Dashboard có hoạt động hay không.
 
 ## NGINX on a Kubernetes Cluster
