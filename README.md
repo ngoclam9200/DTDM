@@ -260,11 +260,9 @@ Sao chép nội dung trong khóa mã __Token__ vừa lấy được.
 Sau khi mã Token được tạo, bạn có thể truy cập Kubernetes Dashboard của mình bằng nó. Nếu sử dụng __NodePort__ để truy cập Kubernetes Dashboard, bạn có thể lấy cổng được cấp phát bằng sử dụng lệnh.
 ```
 $ kubectl get services -n <namespace> | grep dashboard
-kubernetes-dashboard   NodePort    10.111.76.69    <none>        443:30506/TCP                   414d
-```
-Đối với tôi, tôi sẽ truy cập Kubernetes dashboard trên bất kỳ địa chỉ IP máy cluster nào trên cổng 30506.
 
-![](data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22909%22 height=%22558%22%3E%3C/svg%3E)
+```
+
 
 
 ## NGINX on a Kubernetes Cluster
@@ -334,7 +332,7 @@ Gõ 2 dòng lệnh sau sau đó lưu file
 FROM httpd:2.4-alpine
 COPY ./code /usr/local/apache2/htdocs
 ```
-Thực hiện build và push lên dockerhub (ta đã có sẵn 1 repositori)
+Thực hiện build và push lên dockerhub (ta đã có sẵn 1 repositories)
 ![](https://github.com/ngoclam9200/DTDM/blob/master/File/anh%20readme/dockerhub.png)
 ```
 docker login 
@@ -352,7 +350,7 @@ kubectl get svc
 kubectl get deploy
 kubectl get pod
 ```
-![](https://github.com/ngoclam9200/DTDM/blob/master/File/anh%20readme/svcpoddeploy.png)
+![](https://github.com/ngoclam9200/DTDM/blob/master/File/anh%20readme/svcpoddeploydemo.png)
 Chạy web trên trình duyêt
 ![](https://github.com/ngoclam9200/DTDM/blob/master/File/anh%20readme/webdemo.png)
 
