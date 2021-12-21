@@ -227,7 +227,7 @@ kubectl get svc
 ```
 ![get svc](https://github.com/ngoclam9200/DTDM/blob/master/File/anh%20readme/nginxgetsvc.png)
 Hãy xác minh xem điều đó có thực sự đúng hay không, rằng tôi không có interal IP nào được gắn vào các giao diện của mình bằng lệnh IP.
-```
+
 
 ![](https://github.com/ngoclam9200/DTDM/blob/master/File/anh%20readme/nginxdemo.png)
 
