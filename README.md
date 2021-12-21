@@ -158,11 +158,12 @@ $ kubectl get deployments -n kubernetes-dashboard
 ```
 ![](https://github.com/ngoclam9200/DTDM/blob/master/File/anh%20readme/getdeploydashboard.png)
 Hai Pods được tạo
-```
-$ kubectl get pods -n kubernetes-dashboard
 
 ```
+$ kubectl get pods -n kubernetes-dashboard
 ![](https://github.com/ngoclam9200/DTDM/blob/master/File/anh%20readme/getpoddashboard.png)
+```
+
 Xác nhận xem dịch vụ có thực sự được tạo hay không:
 ```
 $ kubectl get service -n kubernetes-dashboard  
