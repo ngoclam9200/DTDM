@@ -154,8 +154,8 @@ Kiểm tra deployment status:
 
 
 $ kubectl get deployments -n kubernetes-dashboard                              
-![](https://github.com/ngoclam9200/DTDM/blob/master/File/anh%20readme/getdeploydashboard.png)
 ```
+![](https://github.com/ngoclam9200/DTDM/blob/master/File/anh%20readme/getdeploydashboard.png)
 
 Hai Pods được tạo
 
