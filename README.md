@@ -166,7 +166,9 @@ $ kubectl get pods -n kubernetes-dashboard
 
 Xác nhận xem dịch vụ có thực sự được tạo hay không:
 ```
+```
 $ kubectl get service -n kubernetes-dashboard  
+```
 
 ### Truy cập Kubernetes Dashboard
 Việc triển khai Dịch vụ được chỉ định một cổng 30513 / TCP.
