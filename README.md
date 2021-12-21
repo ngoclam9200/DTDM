@@ -238,11 +238,11 @@ Như thể nhận thấy, __Kubernetes__ báo cáo rằng tôi không có public
 ```
 kubectl get svc
 ```
-![get svc](https://www.tecmint.com/wp-content/uploads/2020/02/Check-Nginx-Service-and-Port.png)
+![get svc](https://github.com/ngoclam9200/DTDM/blob/master/File/anh%20readme/nginxgetsvc.png)
 Hãy xác minh xem điều đó có thực sự đúng hay không, rằng tôi không có interal IP nào được gắn vào các giao diện của mình bằng lệnh IP.
 ```
 
-![]()
+![](https://github.com/ngoclam9200/DTDM/blob/master/File/anh%20readme/nginxdemo.png)
 
 
 
