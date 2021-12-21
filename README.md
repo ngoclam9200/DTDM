@@ -115,10 +115,9 @@ kubectl apply -f recommended.yaml
 Các dịch vụ chỉ có sẵn trên __ClusterIPs__ như có thể được nhìn thấy từ đầu ra bên dưới:
 ```
 $ kubectl get svc -n kubernetes-dashboard
-NAME                        TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)    AGE
-dashboard-metrics-scraper   ClusterIP   10.104.220.36   <none>        8000/TCP   23s
-kubernetes-dashboard        ClusterIP   10.108.11.22    <none>        443/TCP    25s
+
 ```
+![](https://github.com/ngoclam9200/DTDM/blob/master/File/anh%20readme/getsvcdashboard.png)
 Patch các service để nghe trên NodePort:
 ```
 kubectl --namespace kubernetes-dashboard patch svc kubernetes-dashboard -p '{"spec": {"type": "NodePort"}}'
@@ -148,42 +147,26 @@ spec:
 status:
   loadBalancer: {}
 ```
-NodePort hiển thị Dịch vụ trên IP của mỗi Node tại một cổng tĩnh (NodePort). Dịch vụ __ClusterIP__, mà dịch vụ NodePort định tuyến, được tạo tự động.
-```
-im nodeport_dashboard_patch.yaml
-spec:
-  ports:
-  - nodePort: 32000
-    port: 443
-    protocol: TCP
-    targetPort: 8443
-EOF
-```
-Apply the patch:
-```
-kubectl -n kubernetes-dashboard patch svc kubernetes-dashboard --patch "$(cat nodeport_dashboard_patch.yaml)"
+
+
+
 ```
 Kiểm tra deployment status:
 ```
 $ kubectl get deployments -n kubernetes-dashboard                              
-NAME                        READY   UP-TO-DATE   AVAILABLE   AGE
-dashboard-metrics-scraper   1/1     1            1           86s
-kubernetes-dashboard        1/1     1            1           86s
+
 ```
+![](https://github.com/ngoclam9200/DTDM/blob/master/File/anh%20readme/getdeploydashboard.png)
 Hai Pods được tạo
 ```
 $ kubectl get pods -n kubernetes-dashboard
-NAME                                         READY   STATUS    RESTARTS   AGE
-dashboard-metrics-scraper-7b64584c5c-xvtqp   1/1     Running   0          2m4s
-kubernetes-dashboard-566f567dc7-w59rn        1/1     Running   0          2m4s
+
 ```
+![](https://github.com/ngoclam9200/DTDM/blob/master/File/anh%20readme/getpoddashboard.png)
 Xác nhận xem dịch vụ có thực sự được tạo hay không:
 ```
 $ kubectl get service -n kubernetes-dashboard  
-NAME                        TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)         AGE
-dashboard-metrics-scraper   ClusterIP   10.103.159.77   <none>        8000/TCP        8m40s
-kubernetes-dashboard        NodePort    10.101.194.22   <none>        443:32000/TCP   8m40s
-```
+
 ### Truy cập Kubernetes Dashboard
 Việc triển khai Dịch vụ được chỉ định một cổng 30513 / TCP.
 ```
