@@ -2,10 +2,11 @@
 
 ## CHUẨN BỊ
 Xây dựng hai máy ubuntu trên EC2.
-|Role|
+|Role| 
 |----|
 |Master|
 |Worker|
+![](https://github.com/ngoclam9200/DTDM/blob/master/File/anh%20readme/2mayao.png)
 ## Install Kubernetes Cluster using kubeadm
 Hướng dẫn thiết lập hai node master và worker.
 ### Tại máy Master và Worker
@@ -182,10 +183,10 @@ dashboard-metrics-scraper   ClusterIP   10.103.159.77   <none>        8000/TCP  
 kubernetes-dashboard        NodePort    10.101.194.22   <none>        443:32000/TCP   8m40s
 ```
 ### Truy cập Kubernetes Dashboard
-Việc triển khai Dịch vụ được chỉ định một cổng 32000 / TCP.
+Việc triển khai Dịch vụ được chỉ định một cổng 30513 / TCP.
 ```
-# Example
-https://192.168.200.14:32000
+!()[]
+
 ```
 Hãy xác nhận xem quyền truy cập vào Dashboard có hoạt động hay không.
 
@@ -236,18 +237,8 @@ kubectl get svc
 ![get svc](https://www.tecmint.com/wp-content/uploads/2020/02/Check-Nginx-Service-and-Port.png)
 Hãy xác minh xem điều đó có thực sự đúng hay không, rằng tôi không có interal IP nào được gắn vào các giao diện của mình bằng lệnh IP.
 ```
-# ip a
-```
-![ip a](https://www.tecmint.com/wp-content/uploads/2020/02/Check-IP-Addresses.png)
-Không có public IP nào như bạn có thể thấy.
 
-Như đã đề cập trước đó, tôi hiện đang chạy triển khai này trên máy ảo được cung cấp bởi một nhà cung cấp đám mây công cộng. Vì vậy, trong khi không có giao diện cụ thể nào được gán public IP, nhà cung cấp VM đã phát hành địa chỉ Ephemeral external IP.
-
-Địa chỉ ephemeral external IP là địa chỉ IP tạm thời vẫn được gắn vào VM cho đến khi phiên bản ảo bị dừng. Khi phiên bản ảo được khởi động lại, một external IP mới được gán. Về cơ bản, đó là một cách đơn giản để các nhà cung cấp dịch vụ tận dụng các idle public IPs.
-
-Thách thức ở đây, ngoài thực tế là public IP của bạn không tĩnh, là __Ephemeral Public IP__ chỉ đơn giản là một phần mở rộng (hoặc proxy) của private IP và vì lý do đó, dịch vụ sẽ chỉ được truy cập trên cổng 30386. Điều đó có nghĩa là dịch vụ sẽ được truy cập trên URL , đó là 104.197.170.99:30386, nếu bạn kiểm tra trình duyệt của mình, bạn sẽ có thể xem trang wellcome __PublicIP:InternalPort__
-![wellcome nginx](https://www.tecmint.com/wp-content/uploads/2020/02/Check-Nginx-Page.png)
-
+![]()
 
 
 
